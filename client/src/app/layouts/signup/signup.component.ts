@@ -8,18 +8,19 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { UserServiceService } from '../../services/user/user-service.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [FormsModule, CommonModule, ReactiveFormsModule],
+  imports: [FormsModule, CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './signup.component.html',
   styles: ``,
   providers: [UserServiceService],
 })
 export class SignupComponent {
   signupForm: FormGroup;
+  signupError = '';
   constructor(
     private fb: FormBuilder,
     private userService: UserServiceService,
@@ -36,26 +37,16 @@ export class SignupComponent {
   }
   onSubmit(): void {
     if (this.signupForm.valid) {
+      this.signupError = '';
       const formData = this.signupForm.value;
-      // debugger;
-      // // Call the Register method in the auth service
       this.userService.signup(formData).subscribe({
         next: (response) => {
           console.log('Signup successful:', response);
-          // Handle successful Register
-          // localStorage.setItem('RegisterUserData', response.fullName);
-          // localStorage.setItem('RegisterUserEmail', response.email);
-          // localStorage.setItem('RegisterUserPhone', response.phone);
-          // localStorage.setItem('RegisterUserUsername', response.username);
-          // localStorage.setItem('role', response.role);
-          // localStorage.setItem('SignUptoken', response.token);
-          // console.log(response);
           this.router.navigate(['/login']);
-          // console.log(response.token);
         },
         error: (error) => {
           console.log('signup failed:', error);
-          // Handle signup failure (e.g., display an error message)
+          this.signupError = error?.error?.message || 'Registration failed. Please try again.';
         },
       });
     }
