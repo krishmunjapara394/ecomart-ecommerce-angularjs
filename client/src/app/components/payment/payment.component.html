@@ -1,0 +1,84 @@
+<div class="space-y-6">
+  <form class="space-y-5">
+    <!-- Card Number -->
+    <div class="flex flex-col">
+      <label class="text-sm font-medium text-gray-700 mb-1.5">Card Number <span class="text-red-500">*</span></label>
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+          </svg>
+        </div>
+        <input
+          class="w-full lg:w-2/3 pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-violet-200 focus:border-violet-500 outline-none transition-all text-sm tracking-wider"
+          placeholder="1234 5678 9012 3456" maxlength="19" (input)="setCardNumber($event)" />
+      </div>
+    </div>
+
+    <!-- Card Holder -->
+    <div class="flex flex-col">
+      <label class="text-sm font-medium text-gray-700 mb-1.5">Card Holder Name <span
+          class="text-red-500">*</span></label>
+      <div class="relative">
+        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+          </svg>
+        </div>
+        <input
+          class="w-full lg:w-2/3 pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-violet-200 focus:border-violet-500 outline-none transition-all text-sm uppercase"
+          type="text" placeholder="SARAH JOHNSON" (input)="setCardHolder($event)" />
+      </div>
+    </div>
+
+    <!-- Expiry + CVV -->
+    <div class="flex items-end gap-6">
+      <div class="flex flex-col">
+        <label class="text-sm font-medium text-gray-700 mb-1.5">Expiry Date <span class="text-red-500">*</span></label>
+        <div class="flex gap-2 items-center">
+          <input
+            class="w-16 px-3 py-2.5 text-center border border-gray-200 rounded-lg focus:ring-2 focus:ring-violet-200 focus:border-violet-500 outline-none transition-all text-sm"
+            placeholder="MM" maxlength="2" (input)="setExpirationDate($event)" />
+          <span class="text-gray-400 font-bold">/</span>
+          <input
+            class="w-16 px-3 py-2.5 text-center border border-gray-200 rounded-lg focus:ring-2 focus:ring-violet-200 focus:border-violet-500 outline-none transition-all text-sm"
+            placeholder="YY" maxlength="2" (input)="setExpirationDate($event)" />
+        </div>
+      </div>
+
+      <div class="flex flex-col">
+        <label class="text-sm font-medium text-gray-700 mb-1.5">CVV <span class="text-red-500">*</span></label>
+        <input
+          class="w-20 px-3 py-2.5 text-center border border-gray-200 rounded-lg focus:ring-2 focus:ring-violet-200 focus:border-violet-500 outline-none transition-all text-sm"
+          type="password" placeholder="•••" maxlength="4" (input)="setCvv($event)" />
+      </div>
+    </div>
+
+    <!-- Secure badge -->
+    <div class="flex items-center gap-2 mt-2 p-3 bg-green-50 rounded-lg border border-green-100">
+      <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z">
+        </path>
+      </svg>
+      <p class="text-xs text-green-700">Your payment information is encrypted and secure.</p>
+    </div>
+
+    <!-- Payment methods -->
+    <div class="pt-4">
+      <p class="text-sm font-medium text-gray-500 mb-3">We also accept</p>
+      <div class="flex flex-wrap gap-3">
+        <img class="h-8 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+          src="./assets/images/payment-method-visa.svg" alt="Visa" />
+        <img class="h-8 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+          src="./assets/images/payment-method-mastercard.svg" alt="Mastercard" />
+        <img class="h-8 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+          src="./assets/images/payment-method-paypal.svg" alt="PayPal" />
+        <img class="h-8 opacity-60 hover:opacity-100 transition-opacity cursor-pointer"
+          src="./assets/images/payment-method-stripe.svg" alt="Stripe" />
+      </div>
+    </div>
+  </form>
+</div>

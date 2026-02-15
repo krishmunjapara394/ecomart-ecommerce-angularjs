@@ -1,0 +1,68 @@
+@if (isLoading) {
+<app-loading-spinner></app-loading-spinner>
+}
+
+<div class="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
+  <div class="border-b border-gray-100 pb-4 mb-6">
+    <h2 class="text-lg font-bold text-gray-800">Manage Address</h2>
+    <p class="text-sm text-gray-400 mt-0.5">Add or update your shipping address for faster checkout</p>
+  </div>
+
+  <form [formGroup]="addressForm" (ngSubmit)="onSubmit()" class="space-y-5">
+    <div class="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div class="sm:col-span-2">
+        <label for="street1" class="mb-1.5 block text-sm font-medium text-gray-700">
+          Street Address 1 <span class="text-red-500">*</span>
+        </label>
+        <input formControlName="street1" type="text" id="street1" placeholder="123 Main Street"
+          class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 outline-none transition-all focus:border-violet-400 focus:ring-2 focus:ring-violet-100" />
+      </div>
+      <div class="sm:col-span-2">
+        <label for="street2" class="mb-1.5 block text-sm font-medium text-gray-700">Street Address 2</label>
+        <input formControlName="street2" type="text" id="street2" placeholder="Apt, Suite, Unit (optional)"
+          class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 outline-none transition-all focus:border-violet-400 focus:ring-2 focus:ring-violet-100" />
+      </div>
+      <div>
+        <label for="city" class="mb-1.5 block text-sm font-medium text-gray-700">
+          City <span class="text-red-500">*</span>
+        </label>
+        <input formControlName="city" type="text" id="city" placeholder="Chicago"
+          class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 outline-none transition-all focus:border-violet-400 focus:ring-2 focus:ring-violet-100" />
+      </div>
+      <div>
+        <label for="state" class="mb-1.5 block text-sm font-medium text-gray-700">
+          State <span class="text-red-500">*</span>
+        </label>
+        <input formControlName="state" type="text" id="state" placeholder="Illinois"
+          class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 outline-none transition-all focus:border-violet-400 focus:ring-2 focus:ring-violet-100" />
+      </div>
+      <div>
+        <label for="country" class="mb-1.5 block text-sm font-medium text-gray-700">
+          Country <span class="text-red-500">*</span>
+        </label>
+        <input formControlName="country" type="text" id="country" placeholder="United States"
+          class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 outline-none transition-all focus:border-violet-400 focus:ring-2 focus:ring-violet-100" />
+      </div>
+      <div>
+        <label for="zip" class="mb-1.5 block text-sm font-medium text-gray-700">Zip Code</label>
+        <input formControlName="zip" type="text" id="zip" placeholder="60601"
+          class="w-full rounded-lg border border-gray-200 px-4 py-2.5 text-sm text-gray-700 outline-none transition-all focus:border-violet-400 focus:ring-2 focus:ring-violet-100" />
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3 border-t border-gray-100 pt-5">
+      <button type="submit"
+        class="inline-flex cursor-pointer items-center gap-2 rounded-lg bg-violet-900 px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-violet-800 hover:shadow-md">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="h-4 w-4">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+        </svg>
+        Save Address
+      </button>
+      <a routerLink="/profile/information"
+        class="inline-flex cursor-pointer items-center rounded-lg border border-gray-200 bg-white px-6 py-2.5 text-sm font-medium text-gray-600 shadow-sm transition-all hover:bg-gray-50">
+        Cancel
+      </a>
+    </div>
+  </form>
+</div>

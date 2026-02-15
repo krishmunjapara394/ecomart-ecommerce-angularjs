@@ -1,0 +1,74 @@
+import { OrderService } from './../../services/order/order.service';
+import { Component } from '@angular/core';
+import { Order } from '../../interfaces/order';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
+
+@Component({
+  selector: 'app-order-history',
+  standalone: true,
+  imports: [
+    CommonModule,
+    RouterModule,
+    LoadingSpinnerComponent,
+  ],
+  templateUrl: './order-history.component.html',
+  styleUrl: './order-history.component.css',
+  providers: [OrderService],
+})
+export class OrderHistoryComponent {
+  orders: Order[] = [];
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalOrders: number;
+  } = {
+    currentPage: 1,
+    totalPages: 1,
+    totalOrders: 0,
+  };
+  selectedOrder: any = {};
+  isLoading = true;
+
+  ngOnInit(): void {
+    this.order.getOrders(this.pagination.currentPage, 5).subscribe({
+      next: (orders) => {
+        this.orders = orders.orders;
+        this.pagination = orders.pagination;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error(error);
+        this.isLoading = false;
+      },
+    });
+  }
+
+  getOrders() {
+    this.order.getOrders(this.pagination.currentPage, 5).subscribe({
+      next: (orders) => {
+        this.orders = orders.orders;
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
+
+  nextPage() {
+    if (this.pagination.currentPage < this.pagination.totalPages) {
+      this.pagination.currentPage++;
+      this.getOrders();
+    }
+  }
+
+  prevPage() {
+    if (this.pagination.currentPage > 1) {
+      this.pagination.currentPage--;
+      this.getOrders();
+    }
+  }
+
+  constructor(private order: OrderService) {}
+}

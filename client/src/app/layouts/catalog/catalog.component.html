@@ -1,0 +1,424 @@
+@if (isLoading) {<app-loading-spinner></app-loading-spinner>}
+
+<div class="min-h-screen bg-gray-50">
+  <!-- Breadcrumbs -->
+  <nav class="mx-auto w-full mt-4 max-w-[1200px] px-5">
+    <ul class="flex items-center">
+      <li class="cursor-pointer">
+        <a routerLink="/">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+            <path
+              d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
+            <path
+              d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
+          </svg>
+        </a>
+      </li>
+      <li><span class="mx-2 text-gray-500">&gt;</span></li>
+      <li class="text-gray-500">All Products</li>
+    </ul>
+  </nav>
+
+  <section class="container mx-auto flex-grow max-w-[1200px] py-5 lg:flex lg:flex-row lg:py-8 px-5 gap-6">
+    <!-- ============ SIDEBAR FILTERS ============ -->
+    <aside class="hidden w-[280px] flex-shrink-0 lg:block">
+      <div class="sticky top-8 space-y-3">
+        <!-- Filter Header Card -->
+        <div class="bg-gradient-to-br from-violet-900 to-violet-700 rounded-2xl p-4 shadow-lg shadow-violet-900/20">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+              <div class="flex items-center justify-center w-9 h-9 rounded-xl bg-white/15 backdrop-blur-sm">
+                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z">
+                  </path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-white">Filters</h3>
+                <p class="text-xs text-violet-200">Refine your search</p>
+              </div>
+            </div>
+            <button *ngIf="activeFilterCount > 0" (click)="clearAllFilters()"
+              class="text-xs bg-white/20 hover:bg-white/30 text-white font-medium px-3 py-1.5 rounded-lg transition-all duration-200 backdrop-blur-sm">
+              Clear ({{ activeFilterCount }})
+            </button>
+          </div>
+        </div>
+
+        <!-- CATEGORIES -->
+        <div
+          class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-shadow hover:shadow-md">
+          <button (click)="toggleSection('categories')"
+            class="w-full flex items-center justify-between px-5 py-3.5 hover:bg-violet-50/50 transition-colors">
+            <div class="flex items-center gap-2.5">
+              <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-violet-100 text-violet-700">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                  </path>
+                </svg>
+              </span>
+              <span class="text-sm font-semibold text-gray-800">Categories</span>
+            </div>
+            <svg class="w-4 h-4 text-gray-400 transition-transform duration-300"
+              [class.rotate-180]="expandedSections['categories']" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div *ngIf="expandedSections['categories']" class="px-4 pb-4 space-y-1">
+            <label *ngFor="let cat of availableCategories"
+              class="flex items-center justify-between cursor-pointer group px-2 py-2 rounded-xl transition-all duration-200 hover:bg-violet-50"
+              [class.bg-violet-50]="checksCategory.includes(cat.name)"
+              [class.border-violet-200]="checksCategory.includes(cat.name)">
+              <div class="flex items-center gap-3">
+                <div class="relative flex items-center">
+                  <input type="checkbox" [checked]="checksCategory.includes(cat.name)"
+                    (change)="getCategoriesFilters(cat.name)"
+                    class="w-4 h-4 rounded border-gray-300 text-violet-600 focus:ring-violet-500 cursor-pointer" />
+                </div>
+                <span class="text-sm transition-colors" [class.text-violet-800]="checksCategory.includes(cat.name)"
+                  [class.font-medium]="checksCategory.includes(cat.name)"
+                  [class.text-gray-600]="!checksCategory.includes(cat.name)">{{ cat.name }}</span>
+              </div>
+              <span class="text-[11px] font-medium px-2 py-0.5 rounded-full transition-colors"
+                [class.bg-violet-200]="checksCategory.includes(cat.name)"
+                [class.text-violet-700]="checksCategory.includes(cat.name)"
+                [class.bg-gray-100]="!checksCategory.includes(cat.name)"
+                [class.text-gray-400]="!checksCategory.includes(cat.name)">{{ cat.count }}</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- BRANDS -->
+        <div
+          class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-shadow hover:shadow-md">
+          <button (click)="toggleSection('brands')"
+            class="w-full flex items-center justify-between px-5 py-3.5 hover:bg-amber-50/50 transition-colors">
+            <div class="flex items-center gap-2.5">
+              <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-amber-100 text-amber-700">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z">
+                  </path>
+                </svg>
+              </span>
+              <span class="text-sm font-semibold text-gray-800">Brands</span>
+            </div>
+            <svg class="w-4 h-4 text-gray-400 transition-transform duration-300"
+              [class.rotate-180]="expandedSections['brands']" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div *ngIf="expandedSections['brands']" class="px-4 pb-4 space-y-1">
+            <label *ngFor="let brand of availableBrands"
+              class="flex items-center justify-between cursor-pointer group px-2 py-2 rounded-xl transition-all duration-200 hover:bg-amber-50"
+              [class.bg-amber-50]="checksBrand.includes(brand.name)">
+              <div class="flex items-center gap-3">
+                <input type="checkbox" [checked]="checksBrand.includes(brand.name)"
+                  (change)="getBrandsFilters(brand.name)"
+                  class="w-4 h-4 rounded border-gray-300 text-amber-600 focus:ring-amber-500 cursor-pointer" />
+                <span class="text-sm transition-colors" [class.text-amber-800]="checksBrand.includes(brand.name)"
+                  [class.font-medium]="checksBrand.includes(brand.name)"
+                  [class.text-gray-600]="!checksBrand.includes(brand.name)">{{ brand.name }}</span>
+              </div>
+              <span class="text-[11px] font-medium px-2 py-0.5 rounded-full transition-colors"
+                [class.bg-amber-200]="checksBrand.includes(brand.name)"
+                [class.text-amber-700]="checksBrand.includes(brand.name)"
+                [class.bg-gray-100]="!checksBrand.includes(brand.name)"
+                [class.text-gray-400]="!checksBrand.includes(brand.name)">{{ brand.count }}</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- PRICE RANGE -->
+        <div
+          class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-shadow hover:shadow-md">
+          <button (click)="toggleSection('price')"
+            class="w-full flex items-center justify-between px-5 py-3.5 hover:bg-emerald-50/50 transition-colors">
+            <div class="flex items-center gap-2.5">
+              <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                  </path>
+                </svg>
+              </span>
+              <span class="text-sm font-semibold text-gray-800">Price Range</span>
+            </div>
+            <svg class="w-4 h-4 text-gray-400 transition-transform duration-300"
+              [class.rotate-180]="expandedSections['price']" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div *ngIf="expandedSections['price']" class="px-5 pb-5 pt-1">
+            <!-- Price display -->
+            <div class="flex items-center justify-between mb-4">
+              <span class="text-sm font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">₹{{ sliderMin
+                }}</span>
+              <span class="text-xs text-gray-400">to</span>
+              <span class="text-sm font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">₹{{ sliderMax
+                }}</span>
+            </div>
+            <!-- Dual range slider -->
+            <div class="relative h-2 mb-2">
+              <!-- Track background -->
+              <div class="absolute inset-0 bg-gray-200 rounded-full"></div>
+              <!-- Active range highlight -->
+              <div class="absolute top-0 h-full bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full"
+                [style.left.%]="sliderMinPercent" [style.right.%]="100 - sliderMaxPercent"></div>
+              <!-- Min slider -->
+              <input type="range" [min]="priceRange.min" [max]="priceRange.max" [value]="sliderMin" step="10"
+                (input)="onSliderMinChange($event)"
+                class="price-slider absolute w-full h-2 appearance-none bg-transparent pointer-events-none top-0 left-0" />
+              <!-- Max slider -->
+              <input type="range" [min]="priceRange.min" [max]="priceRange.max" [value]="sliderMax" step="10"
+                (input)="onSliderMaxChange($event)"
+                class="price-slider absolute w-full h-2 appearance-none bg-transparent pointer-events-none top-0 left-0" />
+            </div>
+            <!-- Min / Max labels -->
+            <div class="flex justify-between mt-2">
+              <span class="text-[10px] text-gray-400">₹{{ priceRange.min }}</span>
+              <span class="text-[10px] text-gray-400">₹{{ priceRange.max }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- COLORS -->
+        <div
+          class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden transition-shadow hover:shadow-md">
+          <button (click)="toggleSection('colors')"
+            class="w-full flex items-center justify-between px-5 py-3.5 hover:bg-pink-50/50 transition-colors">
+            <div class="flex items-center gap-2.5">
+              <span class="flex items-center justify-center w-7 h-7 rounded-lg bg-pink-100 text-pink-700">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01">
+                  </path>
+                </svg>
+              </span>
+              <span class="text-sm font-semibold text-gray-800">Colors</span>
+            </div>
+            <svg class="w-4 h-4 text-gray-400 transition-transform duration-300"
+              [class.rotate-180]="expandedSections['colors']" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+          </button>
+          <div *ngIf="expandedSections['colors']" class="px-5 pb-4">
+            <div class="flex flex-wrap gap-2.5 mt-1">
+              <button *ngFor="let color of availableColors" (click)="getColorFilters(color)"
+                class="w-9 h-9 rounded-full border-2 transition-all duration-300 hover:scale-110 hover:shadow-md relative"
+                [style.background-color]="color"
+                [class]="colors.has(color) ? 'border-violet-500 ring-2 ring-violet-200 scale-110 shadow-md' : 'border-gray-200 hover:border-gray-300'">
+                <svg *ngIf="colors.has(color)"
+                  class="w-4 h-4 text-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 drop-shadow-sm"
+                  fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ============ MAIN CONTENT ============ -->
+    <div class="flex-1">
+      <!-- Toolbar -->
+      <div
+        class="mb-5 flex items-center justify-between bg-white rounded-xl border border-gray-100 shadow-sm px-5 py-3">
+        <!-- Left: results count + mobile filter button -->
+        <div class="flex items-center gap-3">
+          <button (click)="showMobileFilters = !showMobileFilters"
+            class="flex cursor-pointer items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 hover:bg-gray-50 transition-colors lg:hidden text-sm font-medium">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z">
+              </path>
+            </svg>
+            Filters
+            <span *ngIf="activeFilterCount > 0" class="bg-violet-600 text-white text-xs px-1.5 py-0.5 rounded-full">{{
+              activeFilterCount }}</span>
+          </button>
+          <p class="text-sm text-gray-500 hidden sm:block">
+            Showing <span class="font-semibold text-gray-800">{{ filteredProducts.length }}</span>
+            of <span class="font-semibold text-gray-800">{{ products.length }}</span> products
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <!-- Sort Dropdown -->
+          <div class="relative inline-block text-left">
+            <button (click)="sortToggle = !sortToggle"
+              class="flex cursor-pointer items-center gap-2 border border-gray-200 rounded-lg px-4 py-2 hover:bg-gray-50 transition-colors text-sm font-medium">
+              <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
+              </svg>
+              Sort by
+              <svg class="w-3 h-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+            <div [style.display]="sortToggle ? '' : 'none'"
+              class="origin-top-right absolute right-0 mt-2 w-48 rounded-xl shadow-lg bg-white ring-1 ring-gray-100 focus:outline-none z-20 overflow-hidden">
+              <a class="cursor-pointer text-gray-700 flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-violet-50 hover:text-violet-900 transition-colors"
+                (click)="getSort('Asc')">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h9"></path>
+                </svg>
+                Name (A-Z)
+              </a>
+              <a class="cursor-pointer text-gray-700 flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-violet-50 hover:text-violet-900 transition-colors"
+                (click)="getSort('Des')">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h9"></path>
+                </svg>
+                Name (Z-A)
+              </a>
+              <a class="cursor-pointer text-gray-700 flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-violet-50 hover:text-violet-900 transition-colors"
+                (click)="getSort('PriceAsc')">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                </svg>
+                Price (Low-High)
+              </a>
+              <a class="cursor-pointer text-gray-700 flex items-center gap-2 px-4 py-2.5 text-sm hover:bg-violet-50 hover:text-violet-900 transition-colors"
+                (click)="getSort('PriceDes')">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 17h8m0 0V9m0 8l-8-8-4 4-6-6"></path>
+                </svg>
+                Price (High-Low)
+              </a>
+            </div>
+          </div>
+
+          <!-- View Mode -->
+          <div class="hidden gap-1 lg:flex bg-gray-100 rounded-lg p-1">
+            <button (click)="viewMode = 'grid'" class="cursor-pointer p-2 rounded-md transition-colors"
+              [class]="viewMode === 'grid' ? 'bg-white shadow-sm text-violet-900' : 'text-gray-400 hover:text-gray-600'">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z">
+                </path>
+              </svg>
+            </button>
+            <button (click)="viewMode = 'list'" class="cursor-pointer p-2 rounded-md transition-colors"
+              [class]="viewMode === 'list' ? 'bg-white shadow-sm text-violet-900' : 'text-gray-400 hover:text-gray-600'">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                </path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Filter Panel -->
+      <div *ngIf="showMobileFilters"
+        class="lg:hidden mb-5 bg-white rounded-xl border border-gray-100 shadow-sm p-5 space-y-4">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-base font-bold text-gray-800">Filters</h3>
+          <button (click)="showMobileFilters = false" class="text-gray-400 hover:text-gray-600">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Mobile Categories -->
+        <div>
+          <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Categories</p>
+          <div class="flex flex-wrap gap-2">
+            <button *ngFor="let cat of availableCategories" (click)="getCategoriesFilters(cat.name)"
+              class="px-3 py-1.5 rounded-full text-sm font-medium transition-all"
+              [class]="checksCategory.includes(cat.name) ? 'bg-violet-900 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'">
+              {{ cat.name }} ({{ cat.count }})
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Brands -->
+        <div>
+          <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Brands</p>
+          <div class="flex flex-wrap gap-2">
+            <button *ngFor="let brand of availableBrands" (click)="getBrandsFilters(brand.name)"
+              class="px-3 py-1.5 rounded-full text-sm font-medium transition-all"
+              [class]="checksBrand.includes(brand.name) ? 'bg-violet-900 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'">
+              {{ brand.name }} ({{ brand.count }})
+            </button>
+          </div>
+        </div>
+
+        <!-- Mobile Price -->
+        <div>
+          <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Price Range</p>
+          <div class="flex items-center justify-between mb-3">
+            <span class="text-sm font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">₹{{ sliderMin
+              }}</span>
+            <span class="text-xs text-gray-400">to</span>
+            <span class="text-sm font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-lg">₹{{ sliderMax
+              }}</span>
+          </div>
+          <div class="relative h-2 mb-2">
+            <div class="absolute inset-0 bg-gray-200 rounded-full"></div>
+            <div class="absolute top-0 h-full bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full"
+              [style.left.%]="sliderMinPercent" [style.right.%]="100 - sliderMaxPercent"></div>
+            <input type="range" [min]="priceRange.min" [max]="priceRange.max" [value]="sliderMin" step="10"
+              (input)="onSliderMinChange($event)"
+              class="price-slider absolute w-full h-2 appearance-none bg-transparent pointer-events-none top-0 left-0" />
+            <input type="range" [min]="priceRange.min" [max]="priceRange.max" [value]="sliderMax" step="10"
+              (input)="onSliderMaxChange($event)"
+              class="price-slider absolute w-full h-2 appearance-none bg-transparent pointer-events-none top-0 left-0" />
+          </div>
+          <div class="flex justify-between mt-1">
+            <span class="text-[10px] text-gray-400">₹{{ priceRange.min }}</span>
+            <span class="text-[10px] text-gray-400">₹{{ priceRange.max }}</span>
+          </div>
+        </div>
+
+        <!-- Mobile Colors -->
+        <div>
+          <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Colors</p>
+          <div class="flex flex-wrap gap-2">
+            <button *ngFor="let color of availableColors" (click)="getColorFilters(color)"
+              class="w-8 h-8 rounded-full border-2 transition-all" [style.background-color]="color"
+              [class]="colors.has(color) ? 'border-violet-500 ring-2 ring-violet-200' : 'border-gray-200'">
+            </button>
+          </div>
+        </div>
+
+        <button *ngIf="activeFilterCount > 0" (click)="clearAllFilters()"
+          class="w-full py-2 text-sm font-medium text-violet-600 border border-violet-200 rounded-lg hover:bg-violet-50 transition-colors">
+          Clear All Filters
+        </button>
+      </div>
+
+      <!-- Products Grid -->
+      <section class="mx-auto max-w-[1200px]"
+        [ngClass]="viewMode === 'grid' ? 'grid grid-cols-2 gap-4 lg:grid-cols-3' : 'flex flex-col gap-4'">
+        @for (product of filteredProducts; track product._id) {
+        <div class="flex flex-col">
+          <app-product-card [product]="product"></app-product-card>
+        </div>
+        }
+      </section>
+
+      <!-- No results -->
+      <div *ngIf="filteredProducts.length === 0 && !isLoading" class="text-center py-16">
+        <svg class="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"></path>
+        </svg>
+        <h3 class="text-lg font-semibold text-gray-700 mb-1">No products found</h3>
+        <p class="text-gray-400 mb-4">Try adjusting your filters or clearing them</p>
+        <button (click)="clearAllFilters()"
+          class="px-6 py-2 bg-violet-900 text-white rounded-lg hover:bg-violet-800 transition-colors text-sm font-medium">
+          Clear All Filters
+        </button>
+      </div>
+    </div>
+  </section>
+</div>

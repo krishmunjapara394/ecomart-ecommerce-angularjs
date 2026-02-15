@@ -1,0 +1,119 @@
+<div class="space-y-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    <!-- DHL Free -->
+    <div class="relative border-2 rounded-xl cursor-pointer transition-all duration-200 hover:shadow-md"
+      [class]="selectedMethod === 'dhl' ? 'border-violet-500 bg-violet-50 shadow-md' : 'border-gray-200 hover:border-gray-300'"
+      (click)="selectMethod('dhl')">
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
+              <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12">
+                </path>
+              </svg>
+            </div>
+            <div>
+              <p class="font-bold text-gray-800">Standard Delivery</p>
+              <p class="text-xs text-gray-400">5-7 business days</p>
+            </div>
+          </div>
+          <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center"
+            [class]="selectedMethod === 'dhl' ? 'border-violet-500' : 'border-gray-300'">
+            <div *ngIf="selectedMethod === 'dhl'" class="w-2.5 h-2.5 rounded-full bg-violet-500"></div>
+          </div>
+        </div>
+        <p class="text-lg font-bold text-green-600">FREE</p>
+        <p class="text-sm text-gray-500 mt-1">Free shipping on all orders above ₹5,000. Reliable tracking included.</p>
+      </div>
+    </div>
+
+    <!-- Express -->
+    <div class="relative border-2 rounded-xl cursor-pointer transition-all duration-200 hover:shadow-md"
+      [class]="selectedMethod === 'express' ? 'border-violet-500 bg-violet-50 shadow-md' : 'border-gray-200 hover:border-gray-300'"
+      (click)="selectMethod('express')">
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+              <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z">
+                </path>
+              </svg>
+            </div>
+            <div>
+              <p class="font-bold text-gray-800">Express Delivery</p>
+              <p class="text-xs text-gray-400">2-3 business days</p>
+            </div>
+          </div>
+          <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center"
+            [class]="selectedMethod === 'express' ? 'border-violet-500' : 'border-gray-300'">
+            <div *ngIf="selectedMethod === 'express'" class="w-2.5 h-2.5 rounded-full bg-violet-500"></div>
+          </div>
+        </div>
+        <p class="text-lg font-bold text-violet-900">₹199</p>
+        <p class="text-sm text-gray-500 mt-1">Fast delivery with priority handling and real-time tracking updates.</p>
+      </div>
+    </div>
+
+    <!-- Same Day -->
+    <div class="relative border-2 rounded-xl cursor-pointer transition-all duration-200 hover:shadow-md"
+      [class]="selectedMethod === 'sameday' ? 'border-violet-500 bg-violet-50 shadow-md' : 'border-gray-200 hover:border-gray-300'"
+      (click)="selectMethod('sameday')">
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+              <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div>
+              <p class="font-bold text-gray-800">Same Day Delivery</p>
+              <p class="text-xs text-gray-400">Within 24 hours</p>
+            </div>
+          </div>
+          <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center"
+            [class]="selectedMethod === 'sameday' ? 'border-violet-500' : 'border-gray-300'">
+            <div *ngIf="selectedMethod === 'sameday'" class="w-2.5 h-2.5 rounded-full bg-violet-500"></div>
+          </div>
+        </div>
+        <p class="text-lg font-bold text-violet-900">₹499</p>
+        <p class="text-sm text-gray-500 mt-1">Get your order delivered the same day. Available in select cities.</p>
+      </div>
+    </div>
+
+    <!-- Premium -->
+    <div class="relative border-2 rounded-xl cursor-pointer transition-all duration-200 hover:shadow-md"
+      [class]="selectedMethod === 'premium' ? 'border-violet-500 bg-violet-50 shadow-md' : 'border-gray-200 hover:border-gray-300'"
+      (click)="selectMethod('premium')">
+      <div class="absolute -top-2.5 left-4 px-2 py-0.5 bg-amber-400 text-xs font-bold rounded-full">FASTEST</div>
+      <div class="p-5">
+        <div class="flex items-center justify-between mb-3">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-amber-100 rounded-full flex items-center justify-center">
+              <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z">
+                </path>
+              </svg>
+            </div>
+            <div>
+              <p class="font-bold text-gray-800">Premium (3 Hours)</p>
+              <p class="text-xs text-gray-400">Ultra-fast delivery</p>
+            </div>
+          </div>
+          <div class="w-5 h-5 rounded-full border-2 flex items-center justify-center"
+            [class]="selectedMethod === 'premium' ? 'border-violet-500' : 'border-gray-300'">
+            <div *ngIf="selectedMethod === 'premium'" class="w-2.5 h-2.5 rounded-full bg-violet-500"></div>
+          </div>
+        </div>
+        <p class="text-lg font-bold text-violet-900">₹999</p>
+        <p class="text-sm text-gray-500 mt-1">Priority handling with guaranteed 3-hour delivery window. White-glove
+          service included.</p>
+      </div>
+    </div>
+  </div>
+</div>

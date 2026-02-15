@@ -1,0 +1,234 @@
+@if (isLoading) {
+<app-loading-spinner></app-loading-spinner>
+}
+
+<!-- Breadcrumbs -->
+<div>
+  <nav class="mx-auto w-full mt-4 max-w-[1200px] px-5">
+    <ul class="flex items-center">
+      <li class="cursor-pointer">
+        <a routerLink="/">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5">
+            <path
+              d="M11.47 3.84a.75.75 0 011.06 0l8.69 8.69a.75.75 0 101.06-1.06l-8.689-8.69a2.25 2.25 0 00-3.182 0l-8.69 8.69a.75.75 0 001.061 1.06l8.69-8.69z" />
+            <path
+              d="M12 5.432l8.159 8.159c.03.03.06.058.091.086v6.198c0 1.035-.84 1.875-1.875 1.875H15a.75.75 0 01-.75-.75v-4.5a.75.75 0 00-.75-.75h-3a.75.75 0 00-.75.75V21a.75.75 0 01-.75.75H5.625a1.875 1.875 0 01-1.875-1.875v-6.198a2.29 2.29 0 00.091-.086L12 5.43z" />
+          </svg>
+        </a>
+      </li>
+      <li><span class="mx-2 text-gray-500">&gt;</span></li>
+      <li><a routerLink="/catalog" class="cursor-pointer text-gray-500 hover:text-violet-900 transition-colors">All
+          Products</a></li>
+      <li><span class="mx-2 text-gray-500">&gt;</span></li>
+      <li class="text-gray-800 font-medium">{{product?.name}}</li>
+    </ul>
+  </nav>
+</div>
+
+<!-- Main Product Section -->
+<section class="container flex-grow mx-auto max-w-[1200px] border-b py-5 lg:grid lg:grid-cols-2 lg:gap-8 lg:py-10">
+  <!-- Image Gallery -->
+  <div class="container mx-auto px-4">
+    <!-- Main Image -->
+    <div class="overflow-hidden rounded-xl bg-gray-50 border border-gray-100">
+      <img class="w-full h-[450px] object-cover transition-transform duration-500 hover:scale-105"
+        src="{{primaryImage || product?.images?.[0]}}" alt="{{product?.name}}" />
+    </div>
+
+    <!-- Thumbnail Grid -->
+    <div class="mt-4 grid grid-cols-4 gap-3">
+      @for (img of product?.images; track img; let i = $index) {
+      <div (click)="activeImage(img)"
+        class="cursor-pointer overflow-hidden rounded-lg border-2 transition-all duration-200 hover:border-violet-500"
+        [class.border-violet-600]="primaryImage === img" [class.border-gray-200]="primaryImage !== img"
+        [class.ring-2]="primaryImage === img" [class.ring-violet-300]="primaryImage === img">
+        <img class="h-[80px] w-full object-cover transition-transform duration-300 hover:scale-110" src="{{img}}"
+          alt="{{product?.name}} thumbnail {{i + 1}}" />
+      </div>
+      }
+    </div>
+  </div>
+
+  <!-- Product Details -->
+  <div class="mx-auto px-5 lg:px-5">
+    <!-- Category Badge -->
+    <div class="mb-3 mt-4 lg:mt-0">
+      <span class="inline-block rounded-full bg-violet-100 px-3 py-1 text-xs font-semibold text-violet-800">
+        {{product?.category}}
+      </span>
+    </div>
+
+    <h2 class="text-3xl font-bold text-gray-900">{{product?.name}}</h2>
+
+    <!-- Rating -->
+    <div class="mt-2 flex items-center gap-2">
+      <div class="flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5 text-yellow-400">
+          <path fill-rule="evenodd"
+            d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
+            clip-rule="evenodd" />
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5 text-yellow-400">
+          <path fill-rule="evenodd"
+            d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
+            clip-rule="evenodd" />
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5 text-yellow-400">
+          <path fill-rule="evenodd"
+            d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
+            clip-rule="evenodd" />
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5 text-yellow-400">
+          <path fill-rule="evenodd"
+            d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
+            clip-rule="evenodd" />
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5 text-gray-200">
+          <path fill-rule="evenodd"
+            d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401z"
+            clip-rule="evenodd" />
+        </svg>
+      </div>
+      <p class="text-sm text-gray-500">(150 reviews)</p>
+    </div>
+
+    <!-- Price -->
+    <p class="mt-4 text-4xl font-bold text-violet-900">
+      ${{product?.price}}
+    </p>
+
+    <!-- Info Grid -->
+    <div class="mt-5 grid grid-cols-2 gap-3">
+      <div class="rounded-lg bg-gray-50 p-3">
+        <p class="text-xs text-gray-500">Availability</p>
+        @if (checkAvailability()) {
+        <p class="mt-1 text-sm font-semibold text-green-600">
+          <span class="mr-1">●</span> In Stock ({{stock}})
+        </p>
+        } @else {
+        <p class="mt-1 text-sm font-semibold text-red-600">
+          <span class="mr-1">●</span> Out of Stock
+        </p>
+        }
+      </div>
+      <div class="rounded-lg bg-gray-50 p-3">
+        <p class="text-xs text-gray-500">Brand</p>
+        <p class="mt-1 text-sm font-semibold text-gray-800">{{product?.brand}}</p>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <p class="mt-5 text-sm leading-6 text-gray-600">{{product?.desc}}</p>
+
+
+
+    <!-- Color Selector -->
+    <div class="mt-5">
+      <p class="pb-2 text-sm font-medium text-gray-700">Color</p>
+      <div class="flex gap-2">
+        @for (color of product?.colors; track color) {
+        <div (click)="getColorFilters(color)" [style.background-color]='color' [class.ring-2]="colors.has(color)"
+          [class.ring-offset-2]="colors.has(color)" [class.ring-violet-500]="colors.has(color)"
+          class="h-9 w-9 cursor-pointer rounded-full border-2 border-white shadow-sm transition-all duration-200 hover:scale-110">
+        </div>
+        }
+      </div>
+    </div>
+
+    <!-- Quantity -->
+    <div class="mt-5">
+      <p class="pb-2 text-sm font-medium text-gray-700">Quantity</p>
+      <div class="flex items-center">
+        <button (click)="decrementQuantity()"
+          class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-l-md border bg-gray-50 text-lg font-bold duration-150 hover:bg-gray-100 active:bg-gray-200">
+          &minus;
+        </button>
+        <div class="flex h-10 w-14 items-center justify-center border-t border-b text-center font-semibold">
+          {{quantity}}
+        </div>
+        <button (click)="incrementQuantity()"
+          class="flex h-10 w-10 cursor-pointer items-center justify-center rounded-r-md border bg-gray-50 text-lg font-bold duration-150 hover:bg-gray-100 active:bg-gray-200">
+          &#43;
+        </button>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mt-7 flex flex-row items-center gap-4">
+      <button (click)="addToCart()"
+        class="flex h-12 flex-1 cursor-pointer items-center justify-center rounded-lg bg-violet-900 text-white font-semibold duration-200 hover:bg-violet-800 hover:shadow-lg active:bg-violet-950">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="mr-2 h-5 w-5">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+        </svg>
+        Add to Cart
+      </button>
+      <button (click)="addProductToWishList(); wishListBtn = !wishListBtn;"
+        class="flex h-12 w-14 cursor-pointer items-center justify-center rounded-lg border-2 duration-200 hover:bg-red-50"
+        [class.border-red-400]="wishListBtn" [class.border-gray-200]="!wishListBtn">
+        @if (wishListBtn) {
+        <svg xmlns="http://www.w3.org/2000/svg" fill="red" viewBox="0 0 24 24" stroke-width="1.5" stroke="red"
+          class="h-6 w-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+        </svg>
+        } @else {
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="h-6 w-6">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+        </svg>
+        }
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Product Details Section -->
+<section class="container mx-auto max-w-[1200px] px-5 py-5 lg:py-10">
+  <h2 class="text-xl font-bold text-gray-900">Product Details</h2>
+  <p class="mt-4 leading-7 text-gray-600 lg:w-3/4">
+    {{product?.desc}}
+  </p>
+
+  <table class="mt-7 w-full table-auto divide-x divide-y lg:w-1/2">
+    <tbody class="divide-x border">
+      <tr>
+        <td class="border py-2 pl-4 font-bold text-gray-700">Category</td>
+        <td class="border py-2 pl-4 text-gray-600">{{product?.category}}</td>
+      </tr>
+      <tr>
+        <td class="border py-2 pl-4 font-bold text-gray-700">Brand</td>
+        <td class="border py-2 pl-4 text-gray-600">{{product?.brand}}</td>
+      </tr>
+      <tr>
+        <td class="border py-2 pl-4 font-bold text-gray-700">Colors</td>
+        <td class="border py-2 pl-4">
+          <div class="flex gap-2">
+            @for (color of product?.colors; track color) {
+            <span [style.background-color]="color" class="inline-block h-5 w-5 rounded-full border"></span>
+            }
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td class="border py-2 pl-4 font-bold text-gray-700">Stock</td>
+        <td class="border py-2 pl-4 text-gray-600">{{product?.stock}} units</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Related Products -->
+@if (relatedProducts.length > 0) {
+<section class="container mx-auto max-w-[1200px] px-5 pb-10">
+  <h2 class="mb-5 text-xl font-bold text-gray-900">Related Products</h2>
+  <div class="grid grid-cols-2 gap-4 lg:grid-cols-4">
+    @for (prod of relatedProducts; track prod._id) {
+    <app-product-card [product]="prod"></app-product-card>
+    }
+  </div>
+</section>
+}

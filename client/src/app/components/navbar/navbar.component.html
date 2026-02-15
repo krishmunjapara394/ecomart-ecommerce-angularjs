@@ -1,0 +1,94 @@
+<!-- Nav bar -->
+<!-- hidden on small devices -->
+<nav class="relative bg-gradient-to-r from-violet-900 to-violet-800">
+  <div class="mx-auto hidden h-12 w-full max-w-[1200px] items-center md:flex">
+    <!-- All Categories Button -->
+    <button (click)="toggleMenu()"
+      class="ml-5 flex h-full w-44 cursor-pointer items-center justify-center gap-2 bg-amber-400 hover:bg-amber-300 transition-colors font-medium text-sm text-gray-900">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+        class="h-5 w-5">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+      </svg>
+      All Categories
+      <svg class="h-4 w-4 transition-transform duration-200" [class.rotate-180]="toggleBurgerMenu" fill="none"
+        stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+      </svg>
+    </button>
+
+    <div class="mx-7 flex gap-8">
+      <a class="font-light text-white duration-100 hover:text-amber-300 hover:underline" routerLink="/">Home</a>
+      <a class="font-light text-white duration-100 hover:text-amber-300 hover:underline" routerLink="catalog">All
+        Products</a>
+      <a class="font-light text-white duration-100 hover:text-amber-300 hover:underline" routerLink="about-us">About
+        Us</a>
+      <a class="font-light text-white duration-100 hover:text-amber-300 hover:underline" routerLink="contact-us">Contact
+        Us</a>
+    </div>
+    @if (!islogin()) {
+
+    <div class="ml-auto flex gap-4 px-5">
+      <a class="font-light text-white duration-100 hover:text-amber-300 hover:underline" routerLink="login">Login</a>
+
+      <span class="text-white/50">&#124;</span>
+
+      <a class="font-light text-white duration-100 hover:text-amber-300 hover:underline" routerLink="signup">Sign
+        Up</a>
+    </div>
+    } @else {
+    <div class="ml-auto flex gap-4 px-5">
+      <a class="font-light text-white duration-100 hover:text-amber-300 hover:underline cursor-pointer"
+        routerLink="/profile/information">My Profile</a>
+      <span class="text-white/50">&#124;</span>
+      <a class="font-light text-white duration-100 hover:text-amber-300 hover:underline cursor-pointer"
+        (click)="logout()">Logout</a>
+    </div>
+
+    }
+  </div>
+</nav>
+<!-- /Nav bar -->
+
+@if (toggleBurgerMenu) {
+
+<!-- Categories Dropdown Menu -->
+<section class="absolute left-0 right-0 z-10 w-full bg-white border-b border-gray-200 shadow-xl">
+  <div class="mx-auto max-w-[1200px] py-0">
+    <!-- Category Grid -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-0">
+      <button *ngFor="let cat of categories" (click)="goToCategory(cat.name)"
+        class="flex items-center gap-3 px-5 py-4 hover:bg-violet-50 transition-all duration-200 border-b border-r border-gray-100 group">
+        <span
+          class="flex items-center justify-center w-10 h-10 rounded-xl bg-violet-100 text-violet-600 group-hover:bg-violet-200 group-hover:text-violet-800 transition-colors flex-shrink-0">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+            </path>
+          </svg>
+        </span>
+        <div class="text-left min-w-0">
+          <p class="text-sm font-semibold text-gray-800 group-hover:text-violet-900 transition-colors truncate">{{
+            cat.name }}</p>
+          <p class="text-[11px] text-gray-400">{{ cat.count }} products</p>
+        </div>
+      </button>
+    </div>
+    <!-- Footer -->
+    <div class="flex items-center justify-between px-5 py-3 bg-gray-50 border-t border-gray-100">
+      <p class="text-xs text-gray-500">
+        <span class="font-semibold text-violet-700">{{ categories.length }}</span> categories available
+      </p>
+      <button (click)="goToCatalog()"
+        class="text-xs font-semibold text-violet-700 hover:text-violet-900 transition-colors flex items-center gap-1">
+        View All Products
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- /Menu  -->
+}

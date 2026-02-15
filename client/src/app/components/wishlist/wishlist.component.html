@@ -1,0 +1,93 @@
+@if (isLoading) {
+<app-loading-spinner></app-loading-spinner>
+}
+
+<div class="rounded-xl border border-gray-100 bg-white p-6 shadow-sm">
+  <div class="border-b border-gray-100 pb-4 mb-6">
+    <h2 class="text-lg font-bold text-gray-800">My Wishlist</h2>
+    <p class="text-sm text-gray-400 mt-0.5">Products you've saved for later</p>
+  </div>
+
+  @if (!products || products.length === 0) {
+  <div class="flex flex-col items-center justify-center py-16 text-center">
+    <div class="mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gray-50">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="h-8 w-8 text-gray-300">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+      </svg>
+    </div>
+    <p class="text-lg font-semibold text-gray-700">Your wishlist is empty</p>
+    <p class="mt-1 text-sm text-gray-400">Start adding products you love to see them here</p>
+    <a routerLink="/catalog"
+      class="mt-4 inline-flex items-center gap-2 rounded-lg bg-violet-900 px-5 py-2.5 text-sm font-medium text-white transition-all hover:bg-violet-800">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="h-4 w-4">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016a3.001 3.001 0 003.75.614m-16.5 0a3.004 3.004 0 01-.621-4.72L4.318 3.44A1.5 1.5 0 015.378 3h13.243a1.5 1.5 0 011.06.44l1.19 1.189a3 3 0 01-.621 4.72m-13.5 8.65h3.75a.75.75 0 00.75-.75V13.5a.75.75 0 00-.75-.75H6.75a.75.75 0 00-.75.75v3.15c0 .415.336.75.75.75z" />
+      </svg>
+      Browse Products
+    </a>
+  </div>
+  } @else {
+  <!-- Wishlist Count -->
+  <p class="mb-4 text-sm text-gray-500">{{ products.length }} item{{ products.length > 1 ? 's' : '' }} in your wishlist
+  </p>
+
+  <!-- Product List -->
+  <div class="space-y-3">
+    @for (prod of products; track prod._id) {
+    <div
+      class="flex items-center gap-4 rounded-lg border border-gray-100 p-4 transition-all hover:border-violet-100 hover:shadow-sm">
+      <!-- Product Image -->
+      <a [routerLink]="['/product-overview', prod._id]" class="flex-shrink-0">
+        <img class="h-20 w-20 rounded-lg object-cover" [src]="prod.images[0]" [alt]="prod.name" />
+      </a>
+
+      <!-- Product Info -->
+      <div class="flex-1 min-w-0">
+        <a [routerLink]="['/product-overview', prod._id]"
+          class="text-sm font-semibold text-gray-800 hover:text-violet-900 transition-colors line-clamp-1">
+          {{ prod.name }}
+        </a>
+        <p class="mt-0.5 text-xs text-gray-400">{{ prod.category }}</p>
+        <div class="mt-1 flex items-center gap-2">
+          <span class="text-lg font-bold text-violet-900">${{ prod.price }}</span>
+          @if (prod.stock) {
+          <span
+            class="inline-flex items-center rounded-full bg-green-50 px-2 py-0.5 text-[10px] font-medium text-green-700">In
+            Stock</span>
+          } @else {
+          <span
+            class="inline-flex items-center rounded-full bg-red-50 px-2 py-0.5 text-[10px] font-medium text-red-600">Out
+            of Stock</span>
+          }
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex items-center gap-2 flex-shrink-0">
+        <button (click)="addToCart(prod)"
+          class="inline-flex cursor-pointer items-center gap-1.5 rounded-lg bg-amber-400 px-4 py-2 text-sm font-medium text-gray-800 transition-all hover:bg-amber-500 hover:shadow-sm"
+          [class.opacity-50]="!prod.stock" [class.cursor-not-allowed]="!prod.stock">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="h-4 w-4">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+          </svg>
+          <span class="hidden sm:inline">Add to Cart</span>
+        </button>
+        <button (click)="removeProduct(prod._id)"
+          class="inline-flex cursor-pointer items-center justify-center rounded-lg border border-gray-200 p-2 text-gray-400 transition-all hover:border-red-200 hover:bg-red-50 hover:text-red-500">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor" class="h-4 w-4">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+          </svg>
+        </button>
+      </div>
+    </div>
+    }
+  </div>
+  }
+</div>
