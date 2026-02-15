@@ -29,16 +29,20 @@ import { OrdersOverviewComponent } from './components/orders-overview/orders-ove
 import { ProductsOverviewComponent } from './components/products-overview/products-overview.component';
 import { HomeComponent } from './layouts/home/home.component';
 import { OverviewComponent } from './components/overview/overview.component';
+import { AdminProfileComponent } from './components/admin-profile/admin-profile.component';
+import { AdminSettingsComponent } from './components/admin-settings/admin-settings.component';
 export const routes: Routes = [
   {
     path: 'admin-dashboard',
     component: AdminDashboardComponent,
     children: [
+      { path: '', redirectTo: 'overview', pathMatch: 'full' },
       { path: 'overview', component: OverviewComponent },
       { path: 'accounts-overview', component: AccountsOverviewComponent },
       { path: 'orders-overview', component: OrdersOverviewComponent },
       { path: 'products-overview', component: ProductsOverviewComponent },
-      // { path: '', redirectTo: 'accounts', pathMatch: 'full' },
+      { path: 'profile', component: AdminProfileComponent },
+      { path: 'settings', component: AdminSettingsComponent },
     ],
     canActivate: [IsLoggedService, IsAdminService],
   },

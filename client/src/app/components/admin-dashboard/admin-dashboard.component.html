@@ -1,32 +1,278 @@
-<div class="flex h-screen">
-  <!-- Sidebar -->
-  <div
-    class="bg-violet-900 text-white w-64 flex-none p-4 fixed top-0 left-0 h-full"
-  >
-    <h2 class="text-xl font-bold mb-4 text-center">Admin Dashboard</h2>
-    <ul class="space-y-2">
-      <li class="bg-amber-400 p-3 text-black text-xl font-bold rounded-lg">
-        <a routerLink="/admin-dashboard/overview">Overview</a>
-      </li>
-      <li class="bg-amber-400 p-3 text-black text-xl font-bold rounded-lg">
-        <a routerLink="/admin-dashboard/accounts-overview">Accounts Overview</a>
-      </li>
-      <li class="bg-amber-400 p-3 text-black text-xl font-bold rounded-lg">
-        <a routerLink="/admin-dashboard/orders-overview">Orders Overview</a>
-      </li>
-      <li class="bg-amber-400 p-3 text-black text-xl font-bold rounded-lg">
-        <a routerLink="/admin-dashboard/products-overview">Products Overview</a>
-      </li>
-      <li class="bg-red-500 p-3 text-white text-xl text-center font-bold rounded-lg">
-        <a (click)="logout()">Logout</a>
-      </li>
-    </ul>
-  </div>
+<!-- Mobile Overlay -->
+<div
+  *ngIf="mobileSidebarOpen"
+  class="fixed inset-0 z-40 bg-black/50 backdrop-blur-sm lg:hidden"
+  (click)="toggleMobileSidebar()"
+></div>
 
-  <!-- Main Content -->
-  <div class="flex-grow p-4 ml-64 overflow-auto">
-    <router-outlet></router-outlet>
-    <div class="mt-4"></div>
-    <div class="mt-4"></div>
+<div class="h-screen bg-slate-100 overflow-x-hidden">
+  <!-- ═══════════════════════ SIDEBAR ═══════════════════════ -->
+  <aside
+    class="fixed top-0 left-0 z-50 flex flex-col h-full transition-all duration-300 ease-in-out border-r border-white/10"
+    [ngClass]="{
+      'w-72': !sidebarCollapsed,
+      'w-20': sidebarCollapsed,
+      '-translate-x-full lg:translate-x-0': !mobileSidebarOpen,
+      'translate-x-0': mobileSidebarOpen
+    }"
+    style="background: linear-gradient(180deg, #0f0a2a 0%, #1a1145 30%, #231652 60%, #1a1145 100%)"
+  >
+    <!-- Sidebar Header / Brand -->
+    <div class="flex items-center px-5 py-6 border-b border-white/10">
+      <div class="flex items-center justify-center flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-cyan-400 shadow-lg shadow-emerald-500/25">
+        <span class="material-icons text-white text-xl">eco</span>
+      </div>
+      <div *ngIf="!sidebarCollapsed" class="ml-3 overflow-hidden">
+        <h1 class="text-lg font-bold text-white tracking-wide">EcoMart</h1>
+        <p class="text-[10px] text-emerald-300 font-medium tracking-widest uppercase">Admin Panel</p>
+      </div>
+      <button
+        *ngIf="!sidebarCollapsed"
+        (click)="toggleSidebar()"
+        class="ml-auto p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors lg:flex hidden"
+      >
+        <span class="material-icons text-lg">chevron_left</span>
+      </button>
+    </div>
+
+    <!-- Admin Profile Card -->
+    <div class="px-4 py-4" *ngIf="!sidebarCollapsed">
+      <div class="relative p-4 overflow-hidden rounded-2xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/10">
+        <div class="absolute top-0 right-0 w-20 h-20 rounded-full bg-emerald-500/10 -translate-y-1/2 translate-x-1/2"></div>
+        <div class="flex items-center gap-3">
+          <div class="relative">
+            <img
+              *ngIf="adminInfo.image"
+              [src]="adminInfo.image"
+              class="w-11 h-11 rounded-full object-cover ring-2 ring-emerald-400/50 shadow-lg"
+              alt="Admin"
+            />
+            <div
+              *ngIf="!adminInfo.image"
+              class="w-11 h-11 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center ring-2 ring-emerald-400/50"
+            >
+              <span class="text-white font-bold text-sm">{{ adminInfo.fullName?.charAt(0) || 'A' }}</span>
+            </div>
+            <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-400 border-2 border-[#1a1145] rounded-full"></span>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-white font-semibold text-sm truncate">{{ adminInfo.fullName }}</p>
+            <p class="text-slate-400 text-xs truncate">{{ adminInfo.email }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Collapsed Profile Avatar -->
+    <div class="flex justify-center py-4" *ngIf="sidebarCollapsed">
+      <div class="relative">
+        <div
+          *ngIf="!adminInfo.image"
+          class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center"
+        >
+          <span class="text-white font-bold text-sm">{{ adminInfo.fullName?.charAt(0) || 'A' }}</span>
+        </div>
+        <img
+          *ngIf="adminInfo.image"
+          [src]="adminInfo.image"
+          class="w-10 h-10 rounded-full object-cover ring-2 ring-emerald-400/50"
+          alt="Admin"
+        />
+        <span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-400 border-2 border-[#1a1145] rounded-full"></span>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 overflow-y-auto px-3 py-2 space-y-6 admin-sidebar-scroll">
+      <div *ngFor="let section of navSections">
+        <!-- Section Title -->
+        <div class="px-3 mb-2">
+          <p
+            *ngIf="!sidebarCollapsed"
+            class="text-[11px] font-semibold tracking-widest text-slate-500 uppercase"
+          >
+            {{ section.title }}
+          </p>
+          <div *ngIf="sidebarCollapsed" class="w-6 h-px bg-slate-600 mx-auto"></div>
+        </div>
+
+        <!-- Nav Items -->
+        <ul class="space-y-1">
+          <li *ngFor="let item of section.items">
+            <a
+              [routerLink]="item.route"
+              class="group flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 cursor-pointer relative"
+              [ngClass]="{
+                'bg-gradient-to-r from-emerald-500/20 to-cyan-500/10 text-emerald-300 shadow-lg shadow-emerald-500/10 border border-emerald-500/20': isActive(item.route),
+                'text-slate-400 hover:text-white hover:bg-white/5': !isActive(item.route),
+                'justify-center': sidebarCollapsed
+              }"
+            >
+              <!-- Active indicator bar -->
+              <div
+                *ngIf="isActive(item.route)"
+                class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 rounded-r-full bg-emerald-400"
+              ></div>
+
+              <span
+                class="material-icons text-xl transition-colors"
+                [ngClass]="{
+                  'text-emerald-400': isActive(item.route),
+                  'text-slate-500 group-hover:text-emerald-300': !isActive(item.route)
+                }"
+              >{{ item.icon }}</span>
+
+              <span *ngIf="!sidebarCollapsed">{{ item.label }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <div class="p-3 border-t border-white/10">
+      <!-- Expand button (collapsed state) -->
+      <button
+        *ngIf="sidebarCollapsed"
+        (click)="toggleSidebar()"
+        class="w-full flex items-center justify-center p-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-all"
+      >
+        <span class="material-icons">chevron_right</span>
+      </button>
+
+      <!-- Logout (expanded state) -->
+      <button
+        *ngIf="!sidebarCollapsed"
+        (click)="logout()"
+        class="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-slate-400 hover:text-red-400 hover:bg-red-500/10 transition-all duration-200 group"
+      >
+        <span class="material-icons text-xl group-hover:text-red-400">logout</span>
+        <span class="text-sm font-medium">Sign Out</span>
+      </button>
+    </div>
+  </aside>
+
+  <!-- ═══════════════════════ MAIN CONTENT AREA ═══════════════════════ -->
+  <div
+    class="flex flex-col min-h-screen transition-all duration-300 ease-in-out overflow-x-hidden"
+    [ngClass]="{
+      'lg:ml-72': !sidebarCollapsed,
+      'lg:ml-20': sidebarCollapsed
+    }"
+  >
+    <!-- Top Header Bar -->
+    <header class="sticky top-0 z-30 bg-white/80 backdrop-blur-xl border-b border-slate-200/80">
+      <div class="flex items-center justify-between px-4 lg:px-8 py-4">
+        <!-- Left: Mobile menu + Page Title -->
+        <div class="flex items-center gap-4">
+          <button
+            (click)="toggleMobileSidebar()"
+            class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors"
+          >
+            <span class="material-icons">menu</span>
+          </button>
+
+          <button
+            (click)="toggleSidebar()"
+            class="hidden lg:flex p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors"
+          >
+            <span class="material-icons text-xl">{{ sidebarCollapsed ? 'menu_open' : 'menu' }}</span>
+          </button>
+
+          <div>
+            <h1 class="text-xl font-bold text-slate-800">{{ getPageTitle() }}</h1>
+            <p class="text-xs text-slate-500 mt-0.5 hidden sm:block">
+              {{ getGreeting() }}, {{ adminInfo.fullName }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Right: Actions -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <!-- Date -->
+          <div class="hidden md:flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50 text-slate-600">
+            <span class="material-icons text-sm">calendar_today</span>
+            <span class="text-xs font-medium">{{ currentDate | date:'mediumDate' }}</span>
+          </div>
+
+          <!-- Notifications -->
+          <button class="relative p-2.5 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors">
+            <span class="material-icons text-xl">notifications_none</span>
+            <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+          </button>
+
+          <!-- Profile Dropdown -->
+          <div class="relative">
+            <button
+              (click)="toggleProfileDropdown()"
+              class="flex items-center gap-2 p-1.5 pr-3 rounded-xl hover:bg-slate-100 transition-colors"
+            >
+              <div
+                *ngIf="!adminInfo.image"
+                class="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-400 to-cyan-500 flex items-center justify-center"
+              >
+                <span class="text-white font-bold text-xs">{{ adminInfo.fullName?.charAt(0) || 'A' }}</span>
+              </div>
+              <img
+                *ngIf="adminInfo.image"
+                [src]="adminInfo.image"
+                class="w-8 h-8 rounded-lg object-cover"
+                alt="Admin"
+              />
+              <span class="material-icons text-slate-400 text-sm hidden sm:block">expand_more</span>
+            </button>
+
+            <!-- Dropdown Menu -->
+            <div
+              *ngIf="showProfileDropdown"
+              class="absolute right-0 top-full mt-2 w-56 bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 py-2 z-50"
+            >
+              <div class="px-4 py-3 border-b border-slate-100">
+                <p class="text-sm font-semibold text-slate-800">{{ adminInfo.fullName }}</p>
+                <p class="text-xs text-slate-500">{{ adminInfo.email }}</p>
+              </div>
+              <a
+                routerLink="/admin-dashboard/profile"
+                (click)="showProfileDropdown = false"
+                class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors"
+              >
+                <span class="material-icons text-lg">person</span>
+                My Profile
+              </a>
+              <a
+                routerLink="/admin-dashboard/settings"
+                (click)="showProfileDropdown = false"
+                class="flex items-center gap-3 px-4 py-2.5 text-sm text-slate-600 hover:bg-slate-50 transition-colors"
+              >
+                <span class="material-icons text-lg">settings</span>
+                Settings
+              </a>
+              <div class="border-t border-slate-100 mt-1 pt-1">
+                <button
+                  (click)="logout(); showProfileDropdown = false"
+                  class="flex items-center gap-3 w-full px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 transition-colors"
+                >
+                  <span class="material-icons text-lg">logout</span>
+                  Sign Out
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Page Content -->
+    <main class="flex-1 p-4 lg:p-8 min-w-0 overflow-x-hidden">
+      <router-outlet></router-outlet>
+    </main>
+
+    <!-- Footer -->
+    <footer class="px-4 lg:px-8 py-4 border-t border-slate-200/80 bg-white/60">
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
+        <p>&copy; {{ currentDate | date:'yyyy' }} EcoMart Admin. All rights reserved.</p>
+        <p>Version 2.0.0</p>
+      </div>
+    </footer>
   </div>
 </div>

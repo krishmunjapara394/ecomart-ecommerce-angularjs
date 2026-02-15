@@ -4,11 +4,12 @@ import { ProductService } from '../../services/product/product.service';
 import { MatDialog } from '@angular/material/dialog';
 import { RouterModule } from '@angular/router';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-product-form',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, LoadingSpinnerComponent],
+  imports: [ReactiveFormsModule, RouterModule, LoadingSpinnerComponent, CommonModule],
   templateUrl: './product-form.component.html',
   styles: ``
 })

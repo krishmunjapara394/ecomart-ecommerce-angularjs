@@ -1,78 +1,141 @@
-<div class="container mx-auto grid grid-rows-1">
-  <div class="bg-white rounded-lg shadow-lg p-4 lg:w-full md:w-4/4 sm:w-full m-auto">
+<!-- Stats Cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-8">
+  <!-- Total Users -->
+  <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
     <div class="flex items-center justify-between mb-4">
-      <h5 class="text-xl font-bold leading-none text-gray-500">
-        Status Users Registered
-      </h5>
+      <div class="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center">
+        <span class="material-icons text-emerald-600 text-xl">people</span>
+      </div>
+      <span class="text-xs font-medium text-emerald-600 bg-emerald-50 px-2.5 py-1 rounded-full">Users</span>
     </div>
-    <hr class="h-px my-4 bg-gray-200" />
-    <div class="flow-root">
-      <ul role="list" class="p-1">
-        <li class="w-full h-64">
-          <canvas
-            baseChart
-            [data]="UserChartData"
-            [options]="UserChartOptions"
-            [type]="'line'"
-            class="w-full"
-          ></canvas>
-        </li>
-      </ul>
+    <p class="text-3xl font-bold text-slate-800">{{ totalUsers }}</p>
+    <p class="text-sm text-slate-500 mt-1">Total registered users</p>
+  </div>
+
+  <!-- Total Orders -->
+  <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+    <div class="flex items-center justify-between mb-4">
+      <div class="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center">
+        <span class="material-icons text-blue-600 text-xl">local_shipping</span>
+      </div>
+      <span class="text-xs font-medium text-blue-600 bg-blue-50 px-2.5 py-1 rounded-full">Orders</span>
     </div>
+    <p class="text-3xl font-bold text-slate-800">{{ totalOrders }}</p>
+    <p class="text-sm text-slate-500 mt-1">Total orders placed</p>
+  </div>
+
+  <!-- Total Products -->
+  <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+    <div class="flex items-center justify-between mb-4">
+      <div class="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center">
+        <span class="material-icons text-purple-600 text-xl">inventory_2</span>
+      </div>
+      <span class="text-xs font-medium text-purple-600 bg-purple-50 px-2.5 py-1 rounded-full">Products</span>
+    </div>
+    <p class="text-3xl font-bold text-slate-800">{{ totalProducts }}</p>
+    <p class="text-sm text-slate-500 mt-1">Products in catalog</p>
+  </div>
+
+  <!-- Revenue -->
+  <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+    <div class="flex items-center justify-between mb-4">
+      <div class="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center">
+        <span class="material-icons text-amber-600 text-xl">payments</span>
+      </div>
+      <span class="text-xs font-medium text-amber-600 bg-amber-50 px-2.5 py-1 rounded-full">Revenue</span>
+    </div>
+    <p class="text-3xl font-bold text-slate-800">&#8377;{{ totalRevenue | number:'1.0-0' }}</p>
+    <p class="text-sm text-slate-500 mt-1">Total revenue earned</p>
   </div>
 </div>
 
+<!-- User Registration Trends -->
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 mb-6">
+  <div class="flex items-center justify-between mb-6">
+    <div>
+      <h3 class="text-lg font-semibold text-slate-800">User Registration Trends</h3>
+      <p class="text-sm text-slate-500 mt-0.5">New users over time</p>
+    </div>
+    <div class="w-10 h-10 rounded-xl bg-emerald-50 flex items-center justify-center">
+      <span class="material-icons text-emerald-500">trending_up</span>
+    </div>
+  </div>
+  <div class="w-full h-72">
+    <canvas
+      baseChart
+      [data]="UserChartData"
+      [options]="UserChartOptions"
+      [type]="'line'"
+      class="w-full"
+    ></canvas>
+  </div>
+</div>
 
-<div class="container grid items-center grid-rows-1 mt-2">
-  <div class="grid w-full grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-2">
-    <!-- Status Orders -->
-    <div class="bg-white rounded-lg shadow">
-      <div class="flex items-center justify-start p-2">
-        <h5 class="text-xl p-3 font-bold leading-none text-gray-500">
-          Status Orders
-        </h5>
+<!-- Orders & Products Charts Row -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+  <!-- Order Status Distribution -->
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h3 class="text-lg font-semibold text-slate-800">Order Distribution</h3>
+        <p class="text-sm text-slate-500 mt-0.5">By status</p>
       </div>
-      <hr class="h-px bg-gray-200" />
-      <div class="flow-root">
-        <ul role="list" class="p-3">
-          <li class="py-3 sm:py-4">
-            <div class="w-full h-40">
-              <!-- Adjust height -->
-              <canvas
-                baseChart
-                [data]="OrdersChartData"
-                [options]="OrderChartOptions"
-                [type]="'doughnut'"
-              ></canvas>
-            </div>
-          </li>
-        </ul>
+      <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center">
+        <span class="material-icons text-blue-500">pie_chart</span>
       </div>
     </div>
+    <div class="w-full h-52">
+      <canvas
+        baseChart
+        [data]="OrdersChartData"
+        [options]="OrderChartOptions"
+        [type]="'doughnut'"
+      ></canvas>
+    </div>
+    <!-- Order status quick stats -->
+    <div class="grid grid-cols-3 gap-3 mt-6 pt-4 border-t border-slate-100">
+      <div class="text-center">
+        <div class="flex items-center justify-center gap-1.5 mb-1">
+          <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+          <span class="text-xs text-slate-500">Pending</span>
+        </div>
+        <p class="text-lg font-bold text-slate-800">{{ pendingOrders }}</p>
+      </div>
+      <div class="text-center">
+        <div class="flex items-center justify-center gap-1.5 mb-1">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          <span class="text-xs text-slate-500">Accepted</span>
+        </div>
+        <p class="text-lg font-bold text-slate-800">{{ acceptedOrders }}</p>
+      </div>
+      <div class="text-center">
+        <div class="flex items-center justify-center gap-1.5 mb-1">
+          <span class="w-2 h-2 rounded-full bg-red-500"></span>
+          <span class="text-xs text-slate-500">Rejected</span>
+        </div>
+        <p class="text-lg font-bold text-slate-800">{{ rejectedOrders }}</p>
+      </div>
+    </div>
+  </div>
 
-    <!-- Status Products -->
-    <div class="bg-white rounded-lg shadow">
-      <div class="flex items-center justify-start p-2">
-        <h5 class="text-xl p-3 font-bold leading-none text-gray-500">
-          Status Products
-        </h5>
+  <!-- Products by Brand -->
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+    <div class="flex items-center justify-between mb-6">
+      <div>
+        <h3 class="text-lg font-semibold text-slate-800">Products by Brand</h3>
+        <p class="text-sm text-slate-500 mt-0.5">Inventory distribution</p>
       </div>
-      <hr class="h-px bg-gray-200" />
-      <div class="flow-root">
-        <ul role="list" class="p-3">
-          <li class="py-3 sm:py-4">
-            <div class="w-full h-40">
-              <!-- Adjust height -->
-              <canvas
-                baseChart
-                [data]="ProductsChartData"
-                [options]="productChartOptions"
-                [type]="'bar'"
-              ></canvas>
-            </div>
-          </li>
-        </ul>
+      <div class="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center">
+        <span class="material-icons text-purple-500">bar_chart</span>
       </div>
+    </div>
+    <div class="w-full h-64">
+      <canvas
+        baseChart
+        [data]="ProductsChartData"
+        [options]="productChartOptions"
+        [type]="'bar'"
+      ></canvas>
     </div>
   </div>
 </div>

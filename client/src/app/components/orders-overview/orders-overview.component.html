@@ -1,61 +1,119 @@
-<!-- orders-overview.component.html -->
+<!-- Orders Overview - Redesigned -->
 <div>
-  <h2 class="mb-4 text-xl font-bold">Orders Overview</h2>
-  <table class="min-w-full overflow-hidden bg-gray-200 rounded-lg">
-    <thead class="bg-gray-100">
-      <tr>
-        <th class="px-4 py-2">Order ID</th>
-        <th class="px-4 py-2">City</th>
-        <th class="px-4 py-2">Status</th>
-        <th class="px-4 py-2">Date</th>
-        <th class="px-4 py-2">Products</th>
-        <th class="px-4 py-2">Total Price</th>
-        <th class="px-4 py-2">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let order of pageOrders">
-        <td class="px-4 py-2 text-center">
-          {{
-          order._id.length > 10
-          ? (order._id | slice : 0 : 10) + "..."
-          : order._id
-          }}
-        </td>
-        <td class="px-4 py-2 text-center">{{ order.address.city }}</td>
-        <td class="px-4 py-2 text-center">{{ order.status }}</td>
-        <td class="px-4 py-2 text-center">{{ order.date }}</td>
-        <td class="px-4 py-2 text-center">
-          <ul *ngFor="let product of order.uniqueProducts">
-            <li>
-              {{ getProductName(product) }}
-            </li>
-          </ul>
-        </td>
-        <td class="px-4 py-2 text-center">₹{{ order.totalPrice }}</td>
-        <td class="px-4 py-2 text-center">
-          <button class="px-2 py-1 mx-3 text-white bg-green-900 rounded" (click)="acceptOrder(order)" [disabled]="
-              order.status === 'rejected' || order.status === 'accepted'
-            " [ngClass]="
-              order.status === 'rejected' || order.status === 'accepted'
-                ? 'opacity-50'
-                : ''
-            ">
-            Accept
-          </button>
-          <button class="px-2 py-1 mx-3 text-white bg-red-500 rounded" (click)="rejectOrder(order)" [disabled]="
-              order.status === 'rejected' || order.status === 'accepted'
-            " [ngClass]="
-              order.status === 'rejected' || order.status === 'accepted'
-                ? 'opacity-50'
-                : ''
-            ">
-            Reject
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-  <mat-paginator [length]="numberOfOrders" pageSize="10" (page)="onPageChange($event)">
-  </mat-paginator>
+  <!-- Header -->
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+    <div>
+      <h2 class="text-2xl font-bold text-slate-800">Order Management</h2>
+      <p class="text-sm text-slate-500 mt-1">Track and manage all customer orders</p>
+    </div>
+    <div class="px-3 py-2 rounded-xl bg-blue-50 text-blue-700 text-sm font-medium">
+      {{ numberOfOrders }} Orders
+    </div>
+  </div>
+
+  <!-- Orders Table -->
+  <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="min-w-full">
+        <thead>
+          <tr class="bg-slate-50 border-b border-slate-200">
+            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Order ID</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Location</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Date</th>
+            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Products</th>
+            <th class="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">Total</th>
+            <th class="px-6 py-4 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-slate-100">
+          <tr *ngFor="let order of pageOrders" class="hover:bg-slate-50/50 transition-colors">
+            <!-- Order ID -->
+            <td class="px-6 py-4">
+              <span class="text-sm font-mono text-slate-600 bg-slate-100 px-2 py-0.5 rounded">
+                #{{ order._id | slice:0:8 }}
+              </span>
+            </td>
+            <!-- Location -->
+            <td class="px-6 py-4">
+              <div class="flex items-center gap-2">
+                <span class="material-icons text-slate-400 text-sm">location_on</span>
+                <span class="text-sm text-slate-700">{{ order.address.city }}</span>
+              </div>
+            </td>
+            <!-- Status -->
+            <td class="px-6 py-4">
+              <span
+                class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium"
+                [ngClass]="{
+                  'bg-amber-100 text-amber-700': order.status === 'pending',
+                  'bg-emerald-100 text-emerald-700': order.status === 'accepted',
+                  'bg-red-100 text-red-700': order.status === 'rejected'
+                }"
+              >
+                <span class="w-1.5 h-1.5 rounded-full mr-1.5"
+                  [ngClass]="{
+                    'bg-amber-500': order.status === 'pending',
+                    'bg-emerald-500': order.status === 'accepted',
+                    'bg-red-500': order.status === 'rejected'
+                  }"></span>
+                {{ order.status }}
+              </span>
+            </td>
+            <!-- Date -->
+            <td class="px-6 py-4 text-sm text-slate-500">{{ order.date }}</td>
+            <!-- Products -->
+            <td class="px-6 py-4">
+              <div class="max-w-[200px]">
+                <ul class="space-y-0.5" *ngFor="let product of order.uniqueProducts">
+                  <li class="text-xs text-slate-600 truncate flex items-center gap-1">
+                    <span class="w-1 h-1 bg-slate-400 rounded-full flex-shrink-0"></span>
+                    {{ getProductName(product) }}
+                  </li>
+                </ul>
+              </div>
+            </td>
+            <!-- Total -->
+            <td class="px-6 py-4 text-right">
+              <span class="text-sm font-semibold text-slate-800">&#8377;{{ order.totalPrice | number:'1.0-0' }}</span>
+            </td>
+            <!-- Actions -->
+            <td class="px-6 py-4 text-right">
+              <div class="flex items-center justify-end gap-2">
+                <button
+                  (click)="acceptOrder(order)"
+                  [disabled]="order.status === 'rejected' || order.status === 'accepted'"
+                  class="p-2 rounded-lg transition-colors"
+                  [ngClass]="{
+                    'text-emerald-600 hover:bg-emerald-50': order.status !== 'rejected' && order.status !== 'accepted',
+                    'text-slate-300 cursor-not-allowed': order.status === 'rejected' || order.status === 'accepted'
+                  }"
+                  title="Accept Order"
+                >
+                  <span class="material-icons text-lg">check_circle</span>
+                </button>
+                <button
+                  (click)="rejectOrder(order)"
+                  [disabled]="order.status === 'rejected' || order.status === 'accepted'"
+                  class="p-2 rounded-lg transition-colors"
+                  [ngClass]="{
+                    'text-red-500 hover:bg-red-50': order.status !== 'rejected' && order.status !== 'accepted',
+                    'text-slate-300 cursor-not-allowed': order.status === 'rejected' || order.status === 'accepted'
+                  }"
+                  title="Reject Order"
+                >
+                  <span class="material-icons text-lg">cancel</span>
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Paginator -->
+    <div class="border-t border-slate-200 bg-slate-50/50">
+      <mat-paginator [length]="numberOfOrders" pageSize="10" (page)="onPageChange($event)"></mat-paginator>
+    </div>
+  </div>
 </div>

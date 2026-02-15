@@ -16,11 +16,13 @@ import {
 } from '@angular/material/dialog';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { ProfileService } from '../../services/profile/profile.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user-form',
   standalone: true,
   imports: [
+    CommonModule,
     MatLabel,
     MatFormField,
     ReactiveFormsModule,
@@ -29,7 +31,6 @@ import { ProfileService } from '../../services/profile/profile.service';
     MatDialogActions,
     MatDialogClose,
     FormsModule,
-    ReactiveFormsModule,
   ],
   providers: [ProfileService],
   templateUrl: './user-form.component.html',

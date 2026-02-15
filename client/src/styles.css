@@ -78,3 +78,87 @@
   transform: scale(1.2);
   box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
 }
+
+/* ═══════════════ Admin Dashboard Styles ═══════════════ */
+
+/* Prevent horizontal overflow on admin dashboard host */
+app-admin-dashboard {
+  display: block;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Admin sidebar scrollbar */
+.admin-sidebar-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+.admin-sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.admin-sidebar-scroll::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+}
+.admin-sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Admin body font */
+app-admin-dashboard,
+app-admin-dashboard * {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Mat paginator styling for admin */
+app-admin-dashboard .mat-mdc-paginator {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Admin toggle switch fix */
+app-admin-dashboard input[type="checkbox"]:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+/* ═══════════════ Admin Dialog Styles ═══════════════ */
+
+/* Remove default mat-dialog padding and styling */
+.mat-dialog-container-large .mat-mdc-dialog-container {
+  padding: 0 !important;
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}
+
+.mat-dialog-container-large .mdc-dialog__surface {
+  border-radius: 16px !important;
+  overflow: hidden !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+}
+
+.mat-dialog-container-large .mat-mdc-dialog-surface {
+  padding: 0 !important;
+  border-radius: 16px !important;
+}
+
+/* Dialog scrollbar */
+.admin-dialog-scroll::-webkit-scrollbar {
+  width: 5px;
+}
+.admin-dialog-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.admin-dialog-scroll::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 20px;
+}
+.admin-dialog-scroll::-webkit-scrollbar-thumb:hover {
+  background-color: #94a3b8;
+}
+
+/* Dialog backdrop */
+.cdk-overlay-dark-backdrop {
+  background: rgba(15, 23, 42, 0.6) !important;
+  backdrop-filter: blur(4px) !important;
+}

@@ -17,6 +17,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-products-overview',
@@ -52,11 +53,23 @@ export class ProductsOverviewComponent {
   constructor(
     private pService: ProductService,
     public dialog: MatDialog,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private sanitizer: DomSanitizer
   ) {
     this.searchForm = this.fb.group({
       search: ['', Validators.required],
     });
+  }
+
+  getImageUrl(image: string): string | SafeUrl {
+    if (!image) return '';
+    if (image.startsWith('http://') || image.startsWith('https://')) {
+      return image;
+    }
+    if (image.startsWith('data:')) {
+      return this.sanitizer.bypassSecurityTrustUrl(image);
+    }
+    return this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + image);
   }
 
   openDialog() {

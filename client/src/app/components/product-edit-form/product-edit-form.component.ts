@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { CommonModule } from '@angular/common';
 import { SimpleChanges } from '@angular/core';
 import { LoadingSpinnerComponent } from '../loading-spinner/loading-spinner.component';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-product-edit-form',
@@ -21,8 +22,19 @@ export class ProductEditFormComponent {
   selectedFiles: File[] = [];
   isLoading = false;
 
-  constructor(private productService: ProductService, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog) {
+  constructor(private productService: ProductService, @Inject(MAT_DIALOG_DATA) public data: any, public dialog: MatDialog, private sanitizer: DomSanitizer) {
 
+  }
+
+  getImageUrl(image: string): string | SafeUrl {
+    if (!image) return '';
+    if (image.startsWith('http://') || image.startsWith('https://')) {
+      return image;
+    }
+    if (image.startsWith('data:')) {
+      return this.sanitizer.bypassSecurityTrustUrl(image);
+    }
+    return this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + image);
   }
 
   ngOnInit(): void {

@@ -1,100 +1,150 @@
 @if (isLoading) {
-<div class="container mx-auto p-6 min-h-[70vh] min-w-[50vw] max-w-[90vw] max-h-[90vh]">
+<div class="flex items-center justify-center min-h-[400px] w-[600px]">
   <app-loading-spinner></app-loading-spinner>
 </div>
 } @else {
-<div class="container mx-auto p-6 min-h-[70vh] min-w-[50vw] max-w-[90vw] max-h-[90vh]">
-  <h1 class="text-2xl font-bold mb-4">Product</h1>
-  <form [formGroup]="productForm" class="bg-white p-6 rounded-lg shadow-md">
-    <!-- Name -->
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="name">Name</label>
-      <input formControlName="name"
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="name" type="text" placeholder="Enter product name" required>
-    </div>
-    <!-- Price -->
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="price">Price</label>
-      <input formControlName="price"
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="price" type="number" min="0" placeholder="Enter product price" required>
-    </div>
-    <!-- Description -->
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="desc">Description</label>
-      <textarea formControlName="desc"
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="desc" rows="3" placeholder="Enter product description">desc</textarea>
-    </div>
-    <!-- Stock -->
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="stock">Stock</label>
-      <input formControlName="stock"
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="stock" type="number" min="0" placeholder="Enter product stock" required>
-    </div>
-    <!-- Images -->
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="images">Images</label>
-      <input (change)="onFileChange($event)" formControlName="images"
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="images" type="file" multiple required>
-    </div>
-    <!-- Brand -->
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="brand">Brand</label>
-      <select formControlName="brand"
-        class="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="brand" required>
-        <option value="APEX">APEX</option>
-        <option value="Call of SOFA">Call of SOFA</option>
-        <option value="Puff B&G">Puff B&G</option>
-        <option value="Fornighte">Fornighte</option>
-      </select>
-    </div>
-
-    <!-- Category -->
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="category">Category</label>
-      <select formControlName="category" value="category"
-        class="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="category" required>
-        <option value="Bedroom">Bedroom</option>
-        <option value="Sofa">Sofa</option>
-        <option value="Office">Office</option>
-        <option value="Outdoor">Outdoor</option>
-      </select>
-    </div>
-
-    <!-- Size -->
-    <div class="mb-4">
-      <label class="block text-gray-700 font-bold mb-2" for="size">Sizes</label>
-      <select formControlName="size"
-        class="shadow appearance-none border rounded w-full py-2 px-3 bg-white text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="size" required>
-        <option value="S">S</option>
-        <option value="M">M</option>
-        <option value="L">L</option>
-        <option value="XL">XL</option>
-        <option value="XXL">XXL</option>
-      </select>
-    </div>
-    <!-- Colors -->
-    <div class="mb-6">
-      <label class="block text-gray-700 font-bold mb-2" for="colors">Colors</label>
-      <input formControlName="colors"
-        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-        id="colors" type="text" placeholder="Enter product colors (comma-separated)" required>
-    </div>
-    <!-- Submit Button -->
-    <div class="flex items-center justify-end">
-      <button (click)="onSubmit()"
-        class=" hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        type="submit" style="background-color: #4C1D95;">
-        Save Product
+<div class="w-[650px] max-w-[90vw] max-h-[90vh] overflow-y-auto bg-white rounded-2xl admin-dialog-scroll">
+  <!-- Dialog Header -->
+  <div class="sticky top-0 z-10 bg-white border-b border-slate-100 px-7 py-5">
+    <div class="flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/25">
+          <span class="material-icons text-white text-lg">add_box</span>
+        </div>
+        <div>
+          <h2 class="text-lg font-bold text-slate-800">Add New Product</h2>
+          <p class="text-xs text-slate-400">Create a new product listing</p>
+        </div>
+      </div>
+      <button (click)="dialog.closeAll()" class="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors">
+        <span class="material-icons">close</span>
       </button>
     </div>
+  </div>
+
+  <!-- Form Body -->
+  <form [formGroup]="productForm" class="px-7 py-6">
+    <!-- Upload Images -->
+    <div class="mb-6">
+      <label class="block text-sm font-semibold text-slate-700 mb-2">Product Images</label>
+      <div class="relative border-2 border-dashed border-slate-200 rounded-xl p-6 hover:border-emerald-400 hover:bg-emerald-50/30 transition-colors cursor-pointer">
+        <input (change)="onFileChange($event)" type="file" multiple class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+        <div class="flex flex-col items-center justify-center gap-2 text-slate-500">
+          <div class="w-12 h-12 rounded-full bg-emerald-100 flex items-center justify-center">
+            <span class="material-icons text-2xl text-emerald-500">cloud_upload</span>
+          </div>
+          <p class="text-sm font-medium">Click to upload product images</p>
+          <p class="text-xs text-slate-400">PNG, JPG up to 5MB each · Multiple files allowed</p>
+        </div>
+      </div>
+      <p *ngIf="selectedFiles.length > 0" class="text-xs text-emerald-600 mt-2 font-medium flex items-center gap-1">
+        <span class="material-icons text-sm">check_circle</span>
+        {{ selectedFiles.length }} file(s) selected
+      </p>
+    </div>
+
+    <div class="h-px bg-slate-100 mb-6"></div>
+
+    <!-- Name & Price Row -->
+    <div class="grid grid-cols-2 gap-4 mb-5">
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-2">Product Name <span class="text-red-400">*</span></label>
+        <input formControlName="name"
+          class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 transition-all"
+          type="text" placeholder="Enter product name" />
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-2">Price (&#8377;) <span class="text-red-400">*</span></label>
+        <input formControlName="price"
+          class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 transition-all"
+          type="number" min="0" placeholder="0.00" />
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="mb-5">
+      <label class="block text-sm font-semibold text-slate-700 mb-2">Description <span class="text-red-400">*</span></label>
+      <textarea formControlName="desc"
+        class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 transition-all resize-none"
+        rows="3" placeholder="Describe the product..."></textarea>
+    </div>
+
+    <!-- Stock & Brand Row -->
+    <div class="grid grid-cols-2 gap-4 mb-5">
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-2">Stock Quantity <span class="text-red-400">*</span></label>
+        <input formControlName="stock"
+          class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 transition-all"
+          type="number" min="0" placeholder="0" />
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-2">Brand <span class="text-red-400">*</span></label>
+        <select formControlName="brand"
+          class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 transition-all">
+          <option value="" disabled>Select brand</option>
+          <option value="APEX">APEX</option>
+          <option value="Call of SOFA">Call of SOFA</option>
+          <option value="Puff B&G">Puff B&amp;G</option>
+          <option value="Fornighte">Fornighte</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Category & Size Row -->
+    <div class="grid grid-cols-2 gap-4 mb-5">
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-2">Category <span class="text-red-400">*</span></label>
+        <select formControlName="category"
+          class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 transition-all">
+          <option value="" disabled>Select category</option>
+          <option value="Bedroom">Bedroom</option>
+          <option value="Sofa">Sofa</option>
+          <option value="Office">Office</option>
+          <option value="Outdoor">Outdoor</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-slate-700 mb-2">Sizes</label>
+        <select formControlName="size"
+          class="w-full px-4 py-2.5 rounded-xl border border-slate-200 bg-white text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 transition-all">
+          <option value="" disabled>Select size</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Colors -->
+    <div class="mb-6">
+      <label class="block text-sm font-semibold text-slate-700 mb-2">Colors</label>
+      <input formControlName="colors"
+        class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-400 transition-all"
+        type="text" placeholder="e.g. Red, Blue, Green (comma-separated)" />
+    </div>
   </form>
+
+  <!-- Dialog Footer -->
+  <div class="sticky bottom-0 bg-white border-t border-slate-100 px-7 py-4">
+    <div class="flex items-center justify-end gap-3">
+      <button
+        (click)="dialog.closeAll()"
+        class="px-5 py-2.5 rounded-xl text-sm font-medium text-slate-600 hover:bg-slate-100 transition-colors"
+        type="button">
+        Cancel
+      </button>
+      <button
+        (click)="onSubmit()"
+        class="px-6 py-2.5 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 shadow-lg shadow-emerald-500/25 transition-all"
+        type="button">
+        <span class="flex items-center gap-2">
+          <span class="material-icons text-sm">add_circle</span>
+          Create Product
+        </span>
+      </button>
+    </div>
+  </div>
 </div>
 }
