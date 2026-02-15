@@ -8,6 +8,7 @@ import userRouter from "./routes/userRouter.mjs";
 import orderRouter from "./routes/orderRouter.mjs";
 import productRouter from "./routes/productRouter.mjs";
 import featuredProductsRouter from "./routes/featuredProductsRouter.mjs";
+import contactRouter from "./routes/contactRouter.mjs";
 import { protect } from "./controllers/authController.mjs";
 import cors from "cors";
 
@@ -46,6 +47,7 @@ app.use("/api/profile", userRouter);
 app.use("/api/orders", protect, orderRouter);
 app.use("/api/products", productRouter);
 app.use("/api/featuredproducts", featuredProductsRouter);
+app.use("/api/contacts", contactRouter);
 
 // 404 catch-all — must be BEFORE the error handler
 app.all("*", (req, res, next) => {

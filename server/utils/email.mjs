@@ -8,7 +8,7 @@ const sendEmail = async (options) => {
 
   const sender = {
     email: "mailtrap@demomailtrap.com",
-    name: "SwiftCart",
+    name: "EcoMart",
   };
 
   const recipients = [

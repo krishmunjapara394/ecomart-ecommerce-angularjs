@@ -31,6 +31,7 @@ import { HomeComponent } from './layouts/home/home.component';
 import { OverviewComponent } from './components/overview/overview.component';
 import { AdminProfileComponent } from './components/admin-profile/admin-profile.component';
 import { AdminSettingsComponent } from './components/admin-settings/admin-settings.component';
+import { ContactsOverviewComponent } from './components/contacts-overview/contacts-overview.component';
 export const routes: Routes = [
   {
     path: 'admin-dashboard',
@@ -41,6 +42,7 @@ export const routes: Routes = [
       { path: 'accounts-overview', component: AccountsOverviewComponent },
       { path: 'orders-overview', component: OrdersOverviewComponent },
       { path: 'products-overview', component: ProductsOverviewComponent },
+      { path: 'contacts-overview', component: ContactsOverviewComponent },
       { path: 'profile', component: AdminProfileComponent },
       { path: 'settings', component: AdminSettingsComponent },
     ],

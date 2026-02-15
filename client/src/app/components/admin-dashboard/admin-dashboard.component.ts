@@ -36,6 +36,7 @@ export class AdminDashboardComponent implements OnInit {
         { label: 'Users', route: '/admin-dashboard/accounts-overview', icon: 'people' },
         { label: 'Products', route: '/admin-dashboard/products-overview', icon: 'inventory_2' },
         { label: 'Orders', route: '/admin-dashboard/orders-overview', icon: 'local_shipping' },
+        { label: 'Contacts', route: '/admin-dashboard/contacts-overview', icon: 'mail' },
       ],
     },
     {
@@ -97,6 +98,7 @@ export class AdminDashboardComponent implements OnInit {
       '/admin-dashboard/accounts-overview': 'User Management',
       '/admin-dashboard/products-overview': 'Product Management',
       '/admin-dashboard/orders-overview': 'Order Management',
+      '/admin-dashboard/contacts-overview': 'Contact Messages',
       '/admin-dashboard/profile': 'Admin Profile',
       '/admin-dashboard/settings': 'Settings',
     };

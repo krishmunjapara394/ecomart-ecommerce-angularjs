@@ -6,6 +6,7 @@ import {
   Validators,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { ContactService } from '../../services/contact/contact.service';
 
 @Component({
   selector: 'app-contact-us',
@@ -19,8 +20,9 @@ export class ContactUsComponent {
   submitted = false;
   sending = false;
   success = false;
+  errorMessage = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private contactService: ContactService) {
     this.contactForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
@@ -36,21 +38,32 @@ export class ContactUsComponent {
 
   onSubmit() {
     this.submitted = true;
+    this.errorMessage = '';
     if (this.contactForm.invalid) return;
 
     this.sending = true;
 
-    // Simulate sending (replace with real API call if backend endpoint exists)
-    setTimeout(() => {
-      this.sending = false;
-      this.success = true;
-      this.contactForm.reset();
-      this.submitted = false;
+    const { name, email, category, message } = this.contactForm.value;
 
-      // Reset success message after 5 seconds
-      setTimeout(() => {
-        this.success = false;
-      }, 5000);
-    }, 1500);
+    this.contactService.submitContact({ name, email, category, message }).subscribe({
+      next: () => {
+        this.sending = false;
+        this.success = true;
+        this.contactForm.reset();
+        this.submitted = false;
+
+        setTimeout(() => {
+          this.success = false;
+        }, 5000);
+      },
+      error: (err) => {
+        this.sending = false;
+        this.errorMessage = err?.error?.message || 'Something went wrong. Please try again.';
+
+        setTimeout(() => {
+          this.errorMessage = '';
+        }, 5000);
+      },
+    });
   }
 }
