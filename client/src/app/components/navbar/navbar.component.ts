@@ -62,6 +62,14 @@ export class NavbarComponent implements OnInit {
     return localStorage.getItem('token');
   }
 
+  isAdmin() {
+    return localStorage.getItem('role') === 'admin';
+  }
+
+  profileLink(): string {
+    return this.isAdmin() ? '/admin-dashboard/profile' : '/profile/information';
+  }
+
   logout() {
     localStorage.removeItem('token');
     localStorage.removeItem('role');

@@ -39,7 +39,7 @@
     } @else {
     <div class="ml-auto flex gap-4 px-5">
       <a class="font-light text-white duration-100 hover:text-amber-300 hover:underline cursor-pointer"
-        routerLink="/profile/information">My Profile</a>
+        [routerLink]="profileLink()">My Profile</a>
       <span class="text-white/50">&#124;</span>
       <a class="font-light text-white duration-100 hover:text-amber-300 hover:underline cursor-pointer"
         (click)="logout()">Logout</a>

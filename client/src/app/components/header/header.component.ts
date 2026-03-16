@@ -98,6 +98,14 @@ export class HeaderComponent implements OnInit {
     return this.userService.isLoggedIn();
   }
 
+  isAdmin() {
+    return this.userService.isAdmin();
+  }
+
+  accountLink(): string {
+    return this.isAdmin() ? '/admin-dashboard/profile' : '/profile/information';
+  }
+
   toggleCategoryDropdown() {
     this.showCategoryDropdown = !this.showCategoryDropdown;
   }
